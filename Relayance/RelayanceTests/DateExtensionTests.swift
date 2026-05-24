@@ -3,33 +3,112 @@
 //  RelayanceTests
 //
 //  Created by Jaouad on 22/05/2026.
-//
+// RelayanceTests — Livrable 1 : Tests unitaires
 
 import XCTest
+@testable import Relayance
 
 final class DateExtensionTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    // MARK: - dateFromString
+
+    func testDateFromString_avecFormatYYYYMMDD_retourneDate() {
+        // Given
+        let isoString = "2023-02-20"
+
+        // When
+        let date = Date.dateFromString(isoString)
+
+        // Then
+        XCTAssertNotNil(date)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testDateFromString_avecStringInvalide_retourneNil() {
+        // Given
+        let invalide = "pas-une-date"
+
+        // When
+        let date = Date.dateFromString(invalide)
+
+        // Then
+        XCTAssertNil(date)
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    // MARK: - stringFromDate
+
+    func testStringFromDate_retourneStringAuFormatJJMMAAAA() {
+        // Given
+        let date = Date.dateFromString("2023-02-20")!
+
+        // When
+        let string = Date.stringFromDate(date)
+
+        // Then
+        XCTAssertEqual(string, "20-02-2023")
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testStringFromDate_avecDateActuelle_retourneStringNonNil() {
+        // Given
+        let date = Date.now
+
+        // When
+        let string = Date.stringFromDate(date)
+
+        // Then
+        XCTAssertNotNil(string)
     }
 
+    // MARK: - getDay
+
+    func testGetDay_retourneLeJourCorrect() {
+        // Given
+        let date = Date.dateFromString("2023-02-20")!
+
+        // When / Then
+        XCTAssertEqual(date.getDay(), 20)
+    }
+
+    func testGetDay_autreJourRetourneValeurCorrecte() {
+        // Given
+        let date = Date.dateFromString("2023-06-15")!
+
+        // When / Then
+        XCTAssertEqual(date.getDay(), 15)
+    }
+
+    // MARK: - getMonth
+
+    func testGetMonth_retourneLeMoisCorrect() {
+        // Given
+        let date = Date.dateFromString("2023-02-20")!
+
+        // When / Then
+        XCTAssertEqual(date.getMonth(), 2)
+    }
+
+    func testGetMonth_autreMoisRetourneValeurCorrecte() {
+        // Given
+        let date = Date.dateFromString("2023-12-01")!
+
+        // When / Then
+        XCTAssertEqual(date.getMonth(), 12)
+    }
+
+    // MARK: - getYear
+
+    func testGetYear_retourneLAnneeCorrecte() {
+        // Given
+        let date = Date.dateFromString("2023-02-20")!
+
+        // When / Then
+        XCTAssertEqual(date.getYear(), 2023)
+    }
+
+    func testGetYear_autreAnneeRetourneValeurCorrecte() {
+        // Given
+        let date = Date.dateFromString("2024-01-01")!
+
+        // When / Then
+        XCTAssertEqual(date.getYear(), 2024)
+    }
 }

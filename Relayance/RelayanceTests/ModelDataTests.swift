@@ -4,32 +4,33 @@
 //
 //  Created by Jaouad on 23/05/2026.
 //
+// RelayanceTests — Livrable 1 : Tests unitaires
+//  Sélectionner clients.json → File Inspector → cocher RelayanceTests dans Target Membership
 
 import XCTest
+@testable import Relayance
 
 final class ModelDataTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testChargement_avecFichierValide_retourneListeNonVide() {
+        // Given / When
+        let clients: [Client] = ModelData.chargement(
+            "Source.json",
+            bundle: Bundle(for: type(of: self))
+        )
+
+        // Then
+        XCTAssertFalse(clients.isEmpty)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+    func testChargement_avecFichierValide_tousLesClientsOntNomEtEmail() {
+        // Given / When
+        let clients: [Client] = ModelData.chargement(
+            "Source.json",
+            bundle: Bundle(for: type(of: self))
+        )
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+        // Then
+        XCTAssertTrue(clients.allSatisfy { !$0.nom.isEmpty && !$0.email.isEmpty })
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }
