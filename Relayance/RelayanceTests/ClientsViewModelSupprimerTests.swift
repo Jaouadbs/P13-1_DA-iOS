@@ -1,14 +1,13 @@
 //
-//  RelayanceTests.swift
+//  ClientsViewModelSupprimerTests.swift
 //  RelayanceTests
 //
-//  Created by Amandine Cousin on 08/07/2024.
+//  Created by Jaouad on 26/05/2026.
 //
 
 import XCTest
-@testable import Relayance
 
-final class RelayanceTests: XCTestCase {
+final class ClientsViewModelSupprimerTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
