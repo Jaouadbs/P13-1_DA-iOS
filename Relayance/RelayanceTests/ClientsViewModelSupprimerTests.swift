@@ -1,35 +1,70 @@
 //
 //  ClientsViewModelSupprimerTests.swift
-//  RelayanceTests
+//  RelayanceTests — Livrable 2 : Tests d'intégration — Suppression de client
 //
 //  Created by Jaouad on 26/05/2026.
 //
 
 import XCTest
+@testable import Relayance
 
 final class ClientsViewModelSupprimerTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    var viewModel: ClientsViewModel!
+    var clientTest: Client!
+
+    override func setUp() {
+        super.setUp()
+        clientTest = Client(nom: "Jean Dupont", email: "jean@test.com", dateCreationString: "2023-01-01")
+        viewModel = ClientsViewModel(clients: [clientTest])
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    override func tearDown() {
+        viewModel = nil
+        clientTest = nil
+        super.tearDown()
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testSupprimerClient_clientExistant_estRetireDeLaListe() {
+        // Given
+        XCTAssertEqual(viewModel.clients.count, 1)
+
+        // When
+        viewModel.supprimerClient(clientTest)
+
+        // Then
+        XCTAssertEqual(viewModel.clients.count, 0)
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testSupprimerClient_clientExistant_nAppartientPlusALaListe() {
+        // When
+        viewModel.supprimerClient(clientTest)
+
+        // Then
+        XCTAssertFalse(clientTest.clientExiste(clientsList: viewModel.clients))
     }
 
+    func testSupprimerClient_avecPlusieursClients_autresClientsSontConserves() {
+        // Given
+        let autreClient = Client(nom: "Marie", email: "marie@test.com", dateCreationString: "2023-06-01")
+        viewModel = ClientsViewModel(clients: [clientTest, autreClient])
+
+        // When
+        viewModel.supprimerClient(clientTest)
+
+        // Then
+        XCTAssertEqual(viewModel.clients.count, 1)
+        XCTAssertTrue(autreClient.clientExiste(clientsList: viewModel.clients))
+    }
+
+    func testSupprimerClient_clientInexistant_listeResteInchangee() {
+        // Given
+        let clientInexistant = Client(nom: "Inconnu", email: "inconnu@test.com", dateCreationString: "2023-01-01")
+
+        // When
+        viewModel.supprimerClient(clientInexistant)
+
+        // Then
+        XCTAssertEqual(viewModel.clients.count, 1)
+    }
 }

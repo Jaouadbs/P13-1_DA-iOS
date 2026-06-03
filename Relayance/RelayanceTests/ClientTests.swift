@@ -26,7 +26,6 @@ final class ClientTests: XCTestCase {
         XCTAssertEqual(client.nom, nom)
         XCTAssertEqual(client.email, email)
         XCTAssertEqual(client.formatDateVersString(), "20-02-2023")
-        XCTAssertTrue(client.dateCreation is Date)
     }
 
     func testInit_avecDateInvalide_dateCreationFallbackSurDateActuelle() {

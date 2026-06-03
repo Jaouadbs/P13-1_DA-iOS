@@ -11,7 +11,7 @@ import Foundation
 final class ClientsViewModel: ObservableObject {
     @Published var clients: [Client]
 
-    init(clients: [Client] = ModelData.chargement("clients.json")) {
+    init(clients: [Client] = ModelData.chargement("Source.json")) {
         self.clients = clients
     }
 
@@ -26,9 +26,16 @@ final class ClientsViewModel: ObservableObject {
 
     func ajouterClient(nom: String, email: String) {
         guard estEmailValide(email) else { return }
+        guard !clientDejaExistant(nom: nom, email: email) else { return }
         let nouveauClient = Client.creerNouveauClient(nom: nom, email: email)
-        guard !nouveauClient.clientExiste(clientsList: clients) else { return }
         clients.append(nouveauClient)
+    }
+
+    func clientDejaExistant(nom: String, email: String) -> Bool {
+        clients.contains { client in
+            client.nom.lowercased() == nom.lowercased() &&
+            client.email.lowercased() == email.lowercased()
+        }
     }
 
     // MARK: - Suppression

@@ -3,17 +3,18 @@
 //  Relayance
 //
 //  Created by Amandine Cousin on 10/07/2024.
-//
+// Jaouad, @State var clientsList → remplacé par @EnvironmentObject var viewModel
+// la liste vient maintenant du ViewModel partagé, plus de chargement local.
 
 import SwiftUI
 
 struct ListClientsView: View {
-    @State var clientsList: [Client] = ModelData.chargement("Source.json")
+    @EnvironmentObject var viewModel: ClientsViewModel
     @State private var showModal: Bool = false
 
     var body: some View {
         NavigationStack {
-            List(clientsList, id: \.self) { client in
+            List(viewModel.clients, id: \.self) { client in
                 NavigationLink {
                     DetailClientView(client: client)
                 } label: {
@@ -41,4 +42,5 @@ struct ListClientsView: View {
 
 #Preview {
     ListClientsView()
+        .environmentObject(ClientsViewModel())
 }
